@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Serviços</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --light-gold: #F5E6AB;
+            --dark-gold: #B8860B;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--white);
+            color: #333;
+        }
+
+        .logo-container {
+            text-align: center;
+            padding: 20px 0;
+            background-color: var(--white);
+            border-bottom: 1px solid var(--light-gold);
+        }
+
+        .logo-container img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--dark-gold);
+            margin-bottom: 30px;
+        }
+
+        .week-calendar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--light-gold);
+            padding-bottom: 15px;
+        }
+
+        .day {
+            text-align: center;
+            padding: 10px;
+            width: 14%;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 5px;
+        }
+
+        .day:hover {
+            background-color: var(--light-gold);
+        }
+
+        .day.active {
+            background-color: var(--gold);
+            color: white;
+        }
+
+        .appointment-form {
+            background-color: var(--light-gray);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            border: 1px solid var(--light-gold);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark-gold);
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .btn {
+            background-color: var(--gold);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            background-color: var(--dark-gold);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .appointments-list {
+            margin-top: 30px;
+        }
+
+        .appointment-card {
+            background-color: var(--white);
+            border: 1px solid var(--light-gold);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .appointment-info h3 {
+            margin: 0;
+            color: var(--dark-gold);
+        }
+
+        .appointment-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .appointment-actions button {
+            margin-left: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .week-calendar {
+                flex-wrap: wrap;
+            }
+            
+            .day {
+                width: 30%;
+                margin-bottom: 10px;
+            }
+            
+            .appointment-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .appointment-actions {
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <!-- Substitua pelo caminho da sua logo -->
+        <img src="sua-logo.png" alt="Logo" id="logo">
+    </div>
+
+    <div class="container">
+        <h1>Agenda de Serviços</h1>
+        
+        <div class="week-calendar">
+            <div class="day active" data-day="segunda">Segunda</div>
+            <div class="day" data-day="terca">Terça</div>
+            <div class="day" data-day="quarta">Quarta</div>
+            <div class="day" data-day="quinta">Quinta</div>
+            <div class="day" data-day="sexta">Sexta</div>
+            <div class="day" data-day="sabado">Sábado</div>
+            <div class="day" data-day="domingo">Domingo</div>
+        </div>
+        
+        <div class="appointment-form">
+            <h2>Novo Agendamento</h2>
+            <div class="form-group">
+                <label for="client-name">Nome do Cliente</label>
+                <input type="text" id="client-name" placeholder="Digite o nome do cliente">
+            </div>
+            
+            <div class="form-group">
+                <label for="service">Serviço</label>
+                <select id="service">
+                    <option value="">Selecione um serviço</option>
+                    <option value="Corte">Corte</option>
+                    <option value="Coloração">Coloração</option>
+                    <option value="Manicure">Manicure</option>
+                    <option value="Pedicure">Pedicure</option>
+                    <option value="Maquiagem">Maquiagem</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="appointment-time">Horário</label>
+                <input type="time" id="appointment-time">
+            </div>
+            
+            <div class="form-group">
+                <label for="appointment-date">Data</label>
+                <input type="date" id="appointment-date">
+            </div>
+            
+            <input type="hidden" id="edit-id" value="">
+            
+            <button class="btn" id="save-btn">Salvar</button>
+            <button class="btn btn-secondary" id="cancel-btn" style="display: none;">Cancelar</button>
+        </div>
+        
+        <div class="appointments-list">
+            <h2>Agendamentos</h2>
+            <div id="appointments-container">
+                <!-- Os agendamentos serão inseridos aqui via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variáveis globais
+            let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            let currentDay = 'segunda';
+            let editId = null;
+
+            // Elementos DOM
+            const days = document.querySelectorAll('.day');
+            const clientNameInput = document.getElementById('client-name');
+            const serviceSelect = document.getElementById('service');
+            const timeInput = document.getElementById('appointment-time');
+            const dateInput = document.getElementById('appointment-date');
+            const saveBtn = document.getElementById('save-btn');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const appointmentsContainer = document.getElementById('appointments-container');
+            const editIdInput = document.getElementById('edit-id');
+
+            // Configurar data mínima como hoje
+            dateInput.min = new Date().toISOString().split('T')[0];
+
+            // Event Listeners
+            days.forEach(day => {
+                day.addEventListener('click', () => {
+                    days.forEach(d => d.classList.remove('active'));
+                    day.classList.add('active');
+                    currentDay = day.dataset.day;
+                    renderAppointments();
+                });
+            });
+
+            saveBtn.addEventListener('click', saveAppointment);
+            cancelBtn.addEventListener('click', cancelEdit);
+
+            // Funções
+            function saveAppointment() {
+                const clientName = clientNameInput.value.trim();
+                const service = serviceSelect.value;
+                const time = timeInput.value;
+                const date = dateInput.value;
+                const dayOfWeek = currentDay;
+
+                if (!clientName || !service || !time || !date) {
+                    alert('Por favor, preencha todos os campos!');
+                    return;
+                }
+
+                const appointment = {
+                    id: editId || Date.now().toString(),
+                    clientName,
+                    service,
+                    time,
+                    date,
+                    dayOfWeek
+                };
+
+                if (editId) {
+                    // Atualizar agendamento existente
+                    const index = appointments.findIndex(a => a.id === editId);
+                    if (index !== -1) {
+                        appointments[index] = appointment;
+                    }
+                } else {
+                    // Adicionar novo agendamento
+                    appointments.push(appointment);
+                }
+
+                localStorage.setItem('appointments', JSON.stringify(appointments));
+                resetForm();
+                renderAppointments();
+            }
+
+            function renderAppointments() {
+                const filteredAppointments = appointments.filter(a => a.dayOfWeek === currentDay);
+                
+                if (filteredAppointments.length === 0) {
+                    appointmentsContainer.innerHTML = '<p>Nenhum agendamento para este dia.</p>';
+                    return;
+                }
+
+                appointmentsContainer.innerHTML = filteredAppointments
+                    .sort((a, b) => a.time.localeCompare(b.time))
+                    .map(appointment => `
+                        <div class="appointment-card" data-id="${appointment.id}">
+                            <div class="appointment-info">
+                                <h3>${appointment.clientName}</h3>
+                                <p><strong>Serviço:</strong> ${appointment.service}</p>
+                                <p><strong>Horário:</strong> ${formatTime(appointment.time)}</p>
+                                <p><strong>Data:</strong> ${formatDate(appointment.date)}</p>
+                            </div>
+                            <div class="appointment-actions">
+                                <button class="btn" onclick="editAppointment('${appointment.id}')">Editar</button>
+                                <button class="btn btn-secondary" onclick="deleteAppointment('${appointment.id}')">Excluir</button>
+                            </div>
+                        </div>
+                    `).join('');
+            }
+
+            function formatTime(time) {
+                return time.substring(0, 5);
+            }
+
+            function formatDate(dateString) {
+                const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+                return new Date(dateString).toLocaleDateString('pt-BR', options);
+            }
+
+            function editAppointment(id) {
+                const appointment = appointments.find(a => a.id === id);
+                if (!appointment) return;
+
+                editId = id;
+                clientNameInput.value = appointment.clientName;
+                serviceSelect.value = appointment.service;
+                timeInput.value = appointment.time;
+                dateInput.value = appointment.date;
+                editIdInput.value = id;
+
+                // Ativar o dia correto
+                days.forEach(day => {
+                    day.classList.toggle('active', day.dataset.day === appointment.dayOfWeek);
+                });
+                currentDay = appointment.dayOfWeek;
+
+                saveBtn.textContent = 'Atualizar';
+                cancelBtn.style.display = 'inline-block';
+            }
+
+            function deleteAppointment(id) {
+                if (confirm('Tem certeza que deseja excluir este agendamento?')) {
+                    appointments = appointments.filter(a => a.id !== id);
+                    localStorage.setItem('appointments', JSON.stringify(appointments));
+                    renderAppointments();
+                    
+                    if (editId === id) {
+                        resetForm();
+                    }
+                }
+            }
+
+            function resetForm() {
+                clientNameInput.value = '';
+                serviceSelect.value = '';
+                timeInput.value = '';
+                dateInput.value = '';
+                editIdInput.value = '';
+                editId = null;
+                saveBtn.textContent = 'Salvar';
+                cancelBtn.style.display = 'none';
+            }
+
+            function cancelEdit() {
+                resetForm();
+            }
+
+            // Tornar funções disponíveis globalmente para os botões nos cards
+            window.editAppointment = editAppointment;
+            window.deleteAppointment = deleteAppointment;
+
+            // Renderizar agendamentos ao carregar
+            renderAppointments();
+        });
+    </script>
+</body>
+</html>
